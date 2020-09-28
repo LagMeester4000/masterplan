@@ -13,6 +13,7 @@ type ProgramSettings struct {
 	DisableSplashscreen       bool
 	DisableMessageLog         bool
 	DisableAboutDialogOnStart bool
+	UseVSync                  bool
 }
 
 func NewProgramSettings() ProgramSettings {

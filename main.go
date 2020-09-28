@@ -14,7 +14,7 @@ import (
 const TARGET_FPS = 60
 
 // Build-time variable
-var releaseMode = "false"
+var releaseMode = "true"
 
 var camera = rl.NewCamera2D(rl.Vector2{480, 270}, rl.Vector2{}, 0, 1)
 var currentProject *Project
@@ -90,10 +90,17 @@ func main() {
 		}
 	}()
 
+	programSettings.Load()
+
 	rl.SetTraceLog(rl.LogError)
 
 	// rl.SetConfigFlags(rl.FlagWindowResizable)
-	rl.SetConfigFlags(rl.FlagWindowResizable + rl.FlagVsyncHint)
+	if programSettings.UseVSync {
+		rl.SetConfigFlags(rl.FlagWindowResizable + rl.FlagVsyncHint)
+	} else {
+		rl.SetConfigFlags(rl.FlagWindowResizable)
+		rl.SetTargetFPS(TARGET_FPS)
+	}
 	rl.InitWindow(960, 540, "MasterPlan v"+softwareVersion.String())
 	rl.SetWindowIcon(*rl.LoadImage(GetPath("assets", "window_icon.png")))
 
@@ -101,8 +108,6 @@ func main() {
 
 	font = rl.LoadFontEx(GetPath("assets", "excel.ttf"), int32(fontSize), nil, 256)
 	guiFont = rl.LoadFontEx(GetPath("assets", "excel.ttf"), int32(guiFontSize), nil, 256)
-
-	programSettings.Load()
 
 	currentProject = NewProject()
 
